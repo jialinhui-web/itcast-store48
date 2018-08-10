@@ -13,7 +13,7 @@
         <el-input type="password" v-model="formData.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" class="login-btn">登录</el-button>
+        <el-button @click="handleLogin" type="primary" class="login-btn">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -28,6 +28,22 @@ export default {
         password: ''
       }
     };
+  },
+  methods: {
+    // 发送请求;传递数据;存储token;给提示;
+    async handleLogin() {
+      const response = await this.$http.post('login', this.formData);
+      // 需要用到status,msg,token
+      const {data: {token}, meta: {msg, status}} = response.data;
+      if (status === 200) {
+        // sessionStorage.setItem('token', token);
+        this.$message.success(msg);
+        // 跳转页面
+        // this.$router.push('/');
+      } else {
+        this.$message.error(msg);
+      }
+    }
   }
 };
 </script>
